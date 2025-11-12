@@ -4,9 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:news_app/models/news_model.dart';
 import 'package:news_app/services/news_services.dart';
 
-// Move heavy JSON parsing off the UI thread using compute. We'll call the
-// top-level helper `parseNewsModel` defined in `news_model.dart` via compute.
-
 class NewsState {
   final bool isLoading;
   final NewsModel newsModel;
