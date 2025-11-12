@@ -26,8 +26,7 @@ class NewsNotifier extends StateNotifier<NewsState> {
     loadNews();
   }
 
-  // Expose the current state via a public getter so consumers can read it
-  // without accessing the protected `state` member directly.
+
   NewsState get current => state;
 
   Future<void> loadNews() async {
@@ -35,7 +34,7 @@ class NewsNotifier extends StateNotifier<NewsState> {
     try {
       final newsResponse = await NewsServices().fetchNews();
       final networkStopwatch = Stopwatch()..start();
-      // Debug info: log basic shape so we can see if API returned results
+
       if (newsResponse is Map && newsResponse.containsKey('results')) {
         final results = newsResponse['results'];
         debugPrint('fetchNews: results type=${results.runtimeType} length=${(results is List) ? results.length : 'N/A'}');
@@ -43,20 +42,20 @@ class NewsNotifier extends StateNotifier<NewsState> {
         debugPrint('fetchNews: response type=${newsResponse.runtimeType} keys=${(newsResponse is Map) ? newsResponse.keys.toList() : 'N/A'}');
       }
       if (newsResponse == null) {
-        // no data -> keep empty results
+        
         state = state.copyWith(newsModel: NewsModel(results: []), isLoading: false);
         return;
       }
-      // Parse in a background isolate where possible to avoid jank on large JSON.
+      
       final parseStopwatch = Stopwatch()..start();
   final news = await compute(NewsModel.parseNewsModel, newsResponse);
       parseStopwatch.stop();
       networkStopwatch.stop();
-      // ignore: avoid_print
+      
       print('NewsNotifier.loadNews: parse ${parseStopwatch.elapsedMilliseconds} ms, total-with-network ${networkStopwatch.elapsedMilliseconds} ms');
       state = state.copyWith(newsModel: news, isLoading: false);
     } catch (e, st) {
-      // Log error and set loading false so UI can show fallback.
+      
       debugPrint('NewsNotifier.loadNews error: $e');
       debugPrint('$st');
       state = state.copyWith(newsModel: NewsModel(results: []), isLoading: false);
@@ -82,7 +81,7 @@ class NewsNotifier extends StateNotifier<NewsState> {
   final news = await compute(NewsModel.parseNewsModel, newsResponse);
       parseStopwatch.stop();
       networkStopwatch.stop();
-      // ignore: avoid_print
+    
       print('NewsNotifier.loadSearchNews: parse ${parseStopwatch.elapsedMilliseconds} ms, total-with-network ${networkStopwatch.elapsedMilliseconds} ms');
       state = state.copyWith(newsModel: news, isLoading: false);
     } catch (e, st) {
