@@ -22,10 +22,7 @@ class NewsModel {
     _nextPage = json['nextPage'];
   }
 
-  /// Top-level helper used with `compute` to parse in a background isolate.
-  /// `compute` requires a top-level or static function. The argument should
-  /// be a JSON-serializable object (Map/List/primitive), which is what Dio
-  /// gives us when `responseType: ResponseType.json`.
+
   static NewsModel parseNewsModel(dynamic json) {
     return NewsModel.fromJson(json);
   }
