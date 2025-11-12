@@ -134,15 +134,14 @@ class Results {
     _sourceUrl = json['source_url'];
     _sourceIcon = json['source_icon'];
     _sentiment = json['sentiment'];
-    // sentiment_stats may be a map with counts on paid plans or a string on free plans.
+
     final _ss = json['sentiment_stats'];
     if (_ss != null && _ss is Map) {
       _sentimentStats = SentimentStats.fromJson(_ss);
     } else {
       _sentimentStats = null;
     }
-
-    // ai_tag/ai_region/ai_org may be lists or placeholder strings when unavailable.
+    
     final _aiTagRaw = json['ai_tag'];
     if (_aiTagRaw == null) {
       _aiTag = [];
